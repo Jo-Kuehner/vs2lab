@@ -3,11 +3,13 @@ from typing import List, Any
 
 import constRPYC
 import rpyc
-from rpyc.utils.server import ThreadedServer
+#from rpyc.utils.server import ThreadedServer
+
+ThreadedServer = rpyc.utils.server.ThreadedServer
 
 from context import lab_logging
 
-lab_logging.setup()
+lab_logging.setup(stream_level=logging.INFO)
 logger = logging.getLogger("vs2lab.lab2.rpyc.server")
 
 

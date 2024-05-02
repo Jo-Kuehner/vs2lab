@@ -10,7 +10,8 @@ class Server:
 
         # create instance logger
         self.logger = logging.getLogger('vs2lab.lab2.channel.Server')
-        self.logger.debug('New Server created.')
+        #self.logger.debug('New Server created.')
+        self.logger.info('New Server created.')
 
     def run(self):
         self.ci.bind(self.server)
@@ -31,11 +32,13 @@ class Client:
 
         # create instance logger
         self.logger = logging.getLogger('vs2lab.lab2.channel.Client')
-        self.logger.debug('New Client created.')
+        #self.logger.debug('New Client created.')
+        self.logger.info('New Client created.')
 
     def run(self):
         self.ci.bind(self.client)
         self.ci.send_to(self.server, 'Hello says ' + self.client)
         answer = self.ci.receive_from(self.server)
-        print("Got answer {} from {}.".format(answer[1], answer[0]))
+        #print("Got answer {} from {}.".format(answer[1], answer[0]))
+        print("Got answer <{}> from <{}>.".format(answer[1], answer[0]))
         self.ci.leave('client')
