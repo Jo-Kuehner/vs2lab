@@ -1,0 +1,73 @@
+Aufgabe 3.1
+
+    Experiment 1
+
+        1. Der Client erstellt ein request-socket und verbindet sich damit. Dann gibt er die erste Anfrage auf der Konsole aus, sendet sie und blockiert,
+        während er auf die Antwort des Servers wartet.
+        -> Sent 1. request wird auf Client-Konsole ausgegeben
+
+        2. Der request wird im request-socket zwischengespeichert, kann aber noch nicht abgeschickt werden da der Server noch nicht online ist 
+        und das request-socket daher nicht mit einem reply-socket verbunden ist.
+        -> Keine weiteren Konsolenausgaben bis der Server gestartet ist
+        -> Server erhält Nachricht des Clients, obwohl er nicht online war als sie gesendet wurde
+
+        3. Der Server erstellt zwei response-sockets und verbindet sich damit. Dann wartet er auf Anfragen.
+
+        4. Der request-socket des Clients und der response-socket des Servers verbinden sich. 
+        Wenn die Verbindung aufgebaut ist schickt der request-socket die zwischengespeicherte Anfrage des Clients an das response-socket.
+
+        5. Der Server erhält die Anfrage des Clients, gibt Recieved + die Anfrage in der Konsole aus, hängt * an die Nachricht an und schickt sie wieder an den Client.
+        -> Recieved Hello world wird auf Server-Konsole ausgegeben
+
+        6. Die reply wird im response-socket zwischengespeichert und an den request-socket gesendet.
+
+        7. Der Client erhält die Antwort des Servers, gibt die Anfrage + die Iteration i + time in der Konsole aus.
+        -> Hello world* [i] time wird auf Client-Konsole ausgegeben
+
+        8. Der Client wiederholt seine Handlungen noch 2x, der Server reagiert darauf, dann ist der Vorgang beendet.
+        -> Es tauchen noch 2x exakt dieselben Konsolenausgaben auf
+
+
+    Experiment 2
+        
+        Der Server hat zwei verschiedene reply-sockets und verwendet je eins für jeden Client.
+        -> Es passiert exakt dasselbe wie oben, nur für beide Clients
+
+        Der Server verbindet sich zuerst mit PORT1, an den client seine Anfragen sendet und erhält so die Anfrage von client zuerst.
+        Der Server wartet so lange auf neue Nachrichten an diesem Port, bis der reply-socket nicht mehr mit einem request.socket verbunden ist. 
+        Dann erst hat er die Kapazität die Anfrage von client1 zu bearbeiten, da er zwar zwei sockets besitzt aber nur in einem thread ausgeführt wird.
+        -> Alle Anfragen von client werden vor allen Anfragen von client1 bearbeitet, auch wenn client1 vor client gestartet wird
+
+
+
+
+Aufgabe 3.2
+
+    Der Server published in regelmäßigen Abständen Nachrichten über einen publish-socket, die entweder zum Thema TIME oder zum Thema DATE sind.
+    TIME enthält die Uhrzeit im h:min:s Format, die Sekunden sind bis auf die 6. Nachkommastelle genau. DATE enthält das Datum im YYYY-MM-DD Format.
+
+    Experiment 1
+
+        client erzeugt einen subscribe-socket und subscribed zu dem Thema TIME. Nach 5 Nachrichten terminiert der thread.
+        Wenn auf zwei Konsolen client ausgeführt wird, wird jeweils ein eigenes subscribe-socket erstellt, da die Konsolen in unterschiedlichen threads laufen.
+        Beide Sockets subscriben zum Thema TIME und erhalten die Nachrichten vom Server
+        -> In beiden Konsolen wird fünf Mal gleichzeitig die exakt gleiche Nachricht ausgegeben, mit exakt derselben Zeit
+        -> Wenn eine Konsole bereits die erste Nachricht erhalten hat wenn die andere gestartet wird, wartet die andere Konsole noch auf ihre fünfte Nachricht
+        wenn die erste bereits terminiert ist und terminiert erst nachdem die fünfte Nachricht erhalten und ausgegeben wurde
+
+    Experiment 2
+
+        client erzeugt einen subscribe-socket und subscribed zu dem Thema TIME. Nach 5 Nachrichten terminiert der thread.
+        client1 erzeugt einen subscribe-socket und subscribed zu dem Thema DATE. Nach 3 Nachrichten terminiert der thread.
+        Beide sockets erhalten gleichzeitig die Nachrichten vom Server, da dieser beide Nachrichten (fast) gleichzeitig published
+        -> In beiden Konsolen werden gleichzeitig unterschiedliche Nachrichten ausgegeben
+
+
+
+
+Aufgabe 3.3
+
+    Funktioniert exakt so wie im Video erklärt: 
+    Sources teilen die Aufgaben zufällig auf verfügbare Worker auf, Worker akzeptieren (abwechselnd) Aufgaben von allen Sources.
+
+    Worker beenden nicht weil 'While True:' eine Endlosschleife ist.

@@ -3,7 +3,7 @@
 Im dritten Labor untersuchen wir eine konkrete Technik der
 *Nachrichtenkommunikation*. Dabei werden zunächst drei Beispiele der wichtigsten
 Kommunikationsmuster mit dem [ZeroMQ Framework](http://zeromq.org) (0MQ)
-betrachtet. Eines davon, das *Paralel Pipeline* Muster, bildet in der Folge die
+betrachtet. Eines davon, das *Parallel Pipeline* Muster, bildet in der Folge die
 Grundlage der Programmieraufgabe. Dabei wird ein einfaches System für die
 verteilte Datenverarbeitung realisiert, das dem Grundprinzip von MapReduce
 Algorithmen aus der bekannten [Hadoop
